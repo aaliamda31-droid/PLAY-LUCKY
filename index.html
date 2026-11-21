@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLAY LUCKY</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090d1c;color:white;font-family:Arial;text-align:center}
+header{background:#151f3d;padding:20px;color:#00ffad}
+h1{margin:5px}
+.card{background:#192442;margin:12px;padding:18px;border-radius:15px}
+button{background:#00d99a;color:#071326;border:0;padding:12px 18px;border-radius:9px;font-weight:bold;margin:5px}
+input{padding:12px;width:85%;margin:8px;border-radius:8px;border:0}
+.game{display:none}
+#avatar{font-size:65px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🎮 PLAY LUCKY</h1>
+<p>WELCOME TO OUR GAMING WORLD</p>
+</header>
+
+<div class="card">
+<h2>👤 MY PROFILE</h2>
+<div id="avatar">😀</div>
+<button onclick="changeAvatar()">Change Avatar</button>
+<h3>Balance: Rs <span id="balance">0</span></h3>
+</div>
+
+<div class="card">
+<h2>💰 RS TOP UP</h2>
+<input id="amount" type="number" placeholder="Enter Amount Rs">
+<input id="number" placeholder="Your JazzCash / Easypaisa Number">
+<button onclick="topup()">Submit Top Up Request</button>
+<p id="topmsg"></p>
+</div>
+
+<div class="card">
+<h2>🎯 SELECT GAME</h2>
+<button onclick="show('snake')">🐍 Snake</button>
+<button onclick="show('tic')">❌ Tic Tac Toe</button>
+<button onclick="show('rps')">✊ Rock Paper Scissors</button>
+<button onclick="show('memory')">🧠 Memory</button>
+<button onclick="show('guess')">🔢 Number Guess</button>
+<button onclick="show('click')">⚡ Speed Click</button>
+</div>
+
+<div class="card game" id="snake">
+<h2>🐍 Snake Demo</h2>
+<p>Eat the food!</p>
+<div id="snakeboard" style="font-size:35px">🐍 🍎</div>
+<button onclick="snakeEat()">Eat Apple</button>
+<p id="snakescore">Score: 0</p>
+</div>
+
+<div class="card game" id="tic">
+<h2>❌ Tic Tac Toe</h2>
+<div id="ticboard"></div>
+<p id="ticmsg">Your turn X</p>
+<button onclick="resetTic()">Restart</button>
+</div>
+
+<div class="card game" id="rps">
+<h2>✊ Rock Paper Scissors</h2>
+<button onclick="rps('Rock')">✊ Rock</button>
+<button onclick="rps('Paper')">✋ Paper</button>
+<button onclick="rps('Scissors')">✌️ Scissors</button>
+<p id="rpsmsg"></p>
+</div>
+
+<div class="card game" id="memory">
+<h2>🧠 Memory Game</h2>
+<div id="memboard"></div>
+<p id="memmsg">Find matching pairs!</p>
+<button onclick="startMemory()">Restart</button>
+</div>
+
+<div class="card game" id="guess">
+<h2>🔢 Guess Number</h2>
+<p>Guess between 1 and 10</p>
+<input id="guessnum" type="number">
+<button onclick="guess()">Check</button>
+<p id="guessmsg"></p>
+</div>
+
+<div class="card game" id="click">
+<h2>⚡ Speed Click</h2>
+<button onclick="clickGame()">CLICK ME!</button>
+<p id="clickscore">Score: 0</p>
+</div>
+
+<footer style="padding:25px;color:#aaa">
+PLAY LUCKY © 2026
+<p>Fun Games • Demo Version</p>
+</footer>
+
+<script>
+let balance=0;
+let avatar=0;
+let avatars=["😀","😎","🥷","👑","🦸","🐯"];
+
+function changeAvatar(){
+ avatar=(avatar+1)%avatars.length;
+ document.getElementById("avatar").innerText=avatars[avatar];
+}
+
+function topup(){
+ let a=Number(document.getElementById("amount").value);
+ let n=document.getElementById("number").value;
+ if(a<1 || !n){
+ alert("Enter amount and number");
+ return;
+ }
+ document.getElementById("topmsg").innerText=
+ "Request submitted! Admin approval required. Rs "+a;
+}
+
+function show(id){
+ document.querySelectorAll(".game").forEach(x=>x.style.display="none");
+ document.getElementById(id).style.display="block";
+}
+
+let snakeScore=0;
+function snakeEat(){
+ snakeScore++;
+ document.getElementById("snakescore").innerText="Score: "+snakeScore;
+ document.getElementById("snakeboard").innerText="🐍 🍎";
+}
+
+let board=["","","","","","","","",""];
+let player="X";
+function drawTic(){
+ let html="";
+ board.forEach((v,i)=>{
+ html+=`<button style="width:65px;height:55px;font-size:22px" onclick="playTic(${i})">${v||" "}</button>`;
+ if(i%3===2)html+="<br>";
+ });
+ document.getElementById("ticboard").innerHTML=html;
+}
+function playTic(i){
+ if(board[i] || checkWin())return;
+ board[i]=player;
+ if(!checkWin())player=player==="X"?"O":"X";
+ document.getElementById("ticmsg").innerText=checkWin()?player+" Wins!":"Turn: "+player;
+ drawTic();
+}
+function checkWin(){
+ let wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+ return wins.some(w=>board[w[0]]&&board[w[0]]===board[w[1]]&&board[w[1]]===board[w[2]]);
+}
+function resetTic(){
+ board=["","","","","","","","",""];
+ player="X";
+ document.getElementById("ticmsg").innerText="Your turn X";
+ drawTic();
+}
+drawTic();
+
+function rps(p){
+ let choices=["Rock","Paper","Scissors"];
+ let c=choices[Math.floor(Math.random()*3)];
+ let result=p===c?"Draw":(p==="Rock"&&c==="Scissors"||p==="Paper"&&c==="Rock"||p==="Scissors"&&c==="Paper")?"You Win!":"Computer Wins!";
+ document.getElementById("rpsmsg").innerText="Computer: "+c+" | "+result;
+}
+
+let symbols=["🍎","🍌","🍇","🍒","🍎","🍌","🍇","🍒"];
+let opened=[],matched=[];
+function startMemory(){
+ opened=[];matched=[];
+ symbols.sort(()=>Math.random()-.5);
+ drawMemory();
+}
+function drawMemory(){
+ document.getElementById("memboard").innerHTML=symbols.map((s,i)=>
+ `<button style="width:55px;height:55px" onclick="flip(${i})">${matched.includes(i)||opened.includes(i)?s:"❓"}</button>`+(i%4===3?"<br>":"")
+ ).join("");
+}
+function flip(i){
+ if(opened.length===2||opened.includes(i)||matched.includes(i))return;
+ opened.push(i);drawMemory();
+ if(opened.length===2){
+ if(symbols[opened[0]]===symbols[opened[1]]){
+ matched.push(...opened);opened=[];drawMemory();
+ document.getElementById("memmsg").innerText="Matches: "+matched.length/2;
+ }else setTimeout(()=>{opened=[];drawMemory()},800);
+ }
+}
+startMemory();
+
+let secret=Math.floor(Math.random()*10)+1;
+function guess(){
+ let n=Number(document.getElementById("guessnum").value);
+ document.getElementById("guessmsg").innerText=n===secret?"Correct! 🎉":n<secret?"Try Higher!":"Try Lower!";
+ if(n===secret)secret=Math.floor(Math.random()*10)+1;
+}
+
+let clicks=0;
+function clickGame(){
+ clicks++;
+ document.getElementById("clickscore").innerText="Score: "+clicks;
+}
+</script>
+</body>
+</html>
+
+
