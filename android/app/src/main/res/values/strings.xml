@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PLAY LUCKY</string>
+    <string name="title_activity_main">PLAY LUCKY</string>
+    <string name="package_name">com.playlucky.game</string>
+    <string name="custom_url_scheme">com.playlucky.game</string>
+</resources>
