@@ -20,6 +20,7 @@
   "homepage": "https://github.com/aaliamda31-droid/PLAY-LUCKY#readme",
   "dependencies": {
     "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
     "@capacitor/core": "^8.6.2"
   }
 }
