@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+nano www/index.html <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta name="description" content="PLAY LUCKY - Enjoy exciting mobile games and fun challenges.">
@@ -31,6 +31,15 @@ input{padding:12px;width:85%;margin:8px;border-radius:8px;border:0}
 <p>WELCOME TO OUR GAMING WORLD</p>
 </header>
 
+<div class="card" id="authCard">
+<h2>🔐 PLAYER ACCOUNT</h2>
+<input id="authEmail" type="email" placeholder="Enter Email">
+<input id="authPassword" type="password" placeholder="Enter Password">
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
+<button onclick="logout()">Logout</button>
+<p id="authStatus">Not logged in</p>
+</div>
 <div class="card">
 <h2>👤 MY PROFILE</h2>
 <div id="avatar">😀</div>
@@ -211,6 +220,7 @@ function clickGame(){
  document.getElementById("clickscore").innerText="Score: "+clicks;
 }
 </script>
+<script type="module" src="auth.js"></script>
 </body>
 </html>
 
